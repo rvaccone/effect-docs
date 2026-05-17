@@ -6,7 +6,6 @@
 - Added section/path subtitle to guide results so duplicate-named entries like Runtime are disambiguated
 - Generalized the cache helper and added a defensive guard against stale cache shapes
 
-## [Initial Release] - {PR_MERGE_DATE}
 ## [Initial Release] - 2026-05-16
 
 - Initial release
