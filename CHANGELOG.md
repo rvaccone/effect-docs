@@ -1,5 +1,11 @@
 # Effect Docs Changelog
 
+## [Replace Removed llms.txt Source] - {PR_MERGE_DATE}
+
+- Switched guide source from `llms.txt` (removed by Effect) to the Starlight docs sidebar HTML
+- Added section/path subtitle to guide results so duplicate-named entries like Runtime disambiguate
+- Generalized the cache helper and added a defensive guard against stale cache shapes
+
 ## [Initial Release] - {PR_MERGE_DATE}
 
 - Initial release
