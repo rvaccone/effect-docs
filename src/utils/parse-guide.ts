@@ -14,7 +14,7 @@ const SECTION_OR_LINK_RE = new RegExp(
 
 export function parseDocsSidebar(html: string): DocItem[] {
 	const sidebar = html.match(SIDEBAR_RE)?.[1];
-	if (!sidebar) return [];
+	if (!sidebar) throw new Error("Could not locate the docs sidebar in the fetched HTML");
 
 	const items: DocItem[] = [];
 	const seen = new Set<string>();

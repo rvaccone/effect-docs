@@ -13,20 +13,36 @@ export async function fetchWithCache<T>(
 	cacheTtl: number,
 	parse: (raw: string) => T,
 ): Promise<T> {
-	const cachedJson = await LocalStorage.getItem<string>(cacheKey);
-	if (cachedJson) {
-		try {
-			const cached = JSON.parse(cachedJson) as CacheEntry<T>;
-			if (Date.now() - cached.timestamp < cacheTtl) return cached.data;
+	const cached = readCache<T>(await LocalStorage.getItem<string>(cacheKey));
+	if (cached) {
+		if (Date.now() - cached.timestamp < cacheTtl) return cached.data;
 
-			void refresh(url, cacheKey, parse).catch(() => undefined);
-			return cached.data;
-		} catch {
-			// Ignore malformed cache entries and refresh from the source.
-		}
+		void refresh(url, cacheKey, parse).catch(() => undefined);
+		return cached.data;
 	}
 
 	return refresh(url, cacheKey, parse);
+}
+
+function readCache<T>(raw: string | undefined): CacheEntry<T> | undefined {
+	if (!raw) return undefined;
+
+	try {
+		const parsed = JSON.parse(raw) as unknown;
+		if (
+			parsed &&
+			typeof parsed === "object" &&
+			"data" in parsed &&
+			"timestamp" in parsed &&
+			typeof (parsed as { timestamp: unknown }).timestamp === "number"
+		) {
+			return parsed as CacheEntry<T>;
+		}
+	} catch {
+		// Malformed JSON — fall through and refresh from the source.
+	}
+
+	return undefined;
 }
 
 async function refresh<T>(url: string, cacheKey: string, parse: (raw: string) => T): Promise<T> {
