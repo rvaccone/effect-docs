@@ -7,6 +7,7 @@
 - Generalized the cache helper and added a defensive guard against stale cache shapes
 
 ## [Initial Release] - {PR_MERGE_DATE}
+## [Initial Release] - 2026-05-16
 
 - Initial release
 - Search Effect guides and API reference from Raycast
